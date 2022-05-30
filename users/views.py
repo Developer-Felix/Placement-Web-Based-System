@@ -70,35 +70,15 @@ def register(request):
     data = {}
     if request.method == "POST":
         username = request.POST.get('username')
-        phone = request.POST.get('phone')
-        age = request.POST.get('age')
+        email = request.POST.get('email')
         pin = request.POST.get('password')
         gender = request.POST.get('gender')
-        wants = request.POST.get('wants')
-        avatar = request.POST.get('avatar')
         print(username)
-        print(phone)
-        print(age)
-        print(avatar)
+        print(email)
         print(gender)
-        print(wants)
 
-        if int(age) <= 18:
-            print("You are bellow 18 years")
-            messages.info(request, f"You are bellow 18 years")
-            return redirect('users:register')
-
-        #if phone number starts with 07 remove the 0 and add +254
-        if phone[0] == '0':
-            phone = phone[1:]
-            phone = '+254'+phone
-        
-        #if phone number does not start with + append + 
-        elif phone[0] != '+':
-            phone = '+'+phone
-
-        #check if the phone number is already registered
-        if Account.objects.filter(phone_number=phone).exists():
+        #check if the email number is already registered
+        if Account.objects.filter(phone_number=email).exists():
             print("phone number already registered")
             messages.info(request, f"Phone number already registered")
             return redirect('users:register')
@@ -107,14 +87,10 @@ def register(request):
 
         #     create a custom user with the phone number as the username and email backend as the password
         parent = Account(
-            phone_number = phone,
+            phone_number = None,
             user_name = username,
-            age = age,
             password=make_password(pin),
-            email = phone + "@gmail.com",
-            gender = gender,
-            wants = wants,
-            avatar = avatar,
+            email = email,
         )
 
         parent.is_customer = True
@@ -122,12 +98,10 @@ def register(request):
         parent.save()
         messages.info(request, f"You are now registered as {username}")
 
-        user = authenticate(request,username=phone,password=pin)
+        user = authenticate(request,username=email,password=pin)
         login(request,parent)
 
         print("Authenticated")
-
-        return redirect('otp/?phone='+phone)
 
     # except:
     #     return redirect('users:ptc-register')
