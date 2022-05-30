@@ -119,7 +119,6 @@ class Account(AbstractBaseUser, PermissionsMixin):
     address = models.CharField(max_length=100,null=True,blank=True)
     email = models.CharField(max_length=100,null=True,blank=True,unique=True)
     location = models.CharField(max_length=100,null=True,blank=True)
-    age = models.IntegerField()
     gender = models.CharField(max_length=255,null=True,blank=True)
     wants = models.CharField(max_length=255,null=True,blank=True)
     is_admin = models.BooleanField(default=False)
@@ -134,7 +133,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     # is_authenticated = True
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name',]
+    REQUIRED_FIELDS = ['user_name','phone_number']
 
     objects = MyAccountManager()
 

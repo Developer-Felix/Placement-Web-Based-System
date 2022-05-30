@@ -24,6 +24,7 @@ def index(request):
         user = authenticate(username=email, password=password)
         # if user is not None:
         login(request,user)
+        print("Authenticated")
         acc = Account.objects.all()
 
         if user.is_authenticated:
