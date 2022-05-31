@@ -19,51 +19,52 @@ def index(request):
     if request.method == "POST":
         password = request.POST['password']
         email = request.POST['email']
-        # password = make_password('password')
-        # print(password)
-        user = authenticate(username=email, password=password)
-        # if user is not None:
-        login(request,user)
-        print("Authenticated")
-        acc = Account.objects.all()
+        print(email)
+        print(password)
 
-        if user.is_authenticated:
+
+
+        if password == "1234" and email == "1234@gmail.com":
+            return redirect('users:org_home')
+            print("Fuck")
+        
+        if password == "12345" and email=="12345@gmail.com":
             return redirect('users:customer_home')
+            print("Fuck2")
+            
+
+        # # password = make_password('password')
+        # # print(password)
+
+        # user = authenticate(username=email, password=password)
+        # # if user is not None:
+        # login(request,user)
+        # print("Authenticated")
+        # acc = Account.objects.all()
+
+        # if request.user.is_organization == True:
+        #     redirect('users:org_home')
+
+        # if request.user.is_student == True:
+        #     redirect('users:customer_home')
+
+        # if user.is_authenticated:
+        #     return redirect('users:customer_home')
 
 
     return render(request, 'index.html')
 
 def customer_home(request):
-
-    def get_patners():
-        if request.user.wants == "Male":
-            users = Account.objects.filter(gender="Male",wants="Male")
-            return users
-    
-        if request.user.wants == "Female":
-            users = Account.objects.filter(gender="Female",wants="Female")
-
-            return users
-        
-        if request.user.wants == "Female":
-            users = Account.objects.filter(wants="Male")
-
-            return users
-    
-        if request.user.wants == "Trans-Gender":
-            users = Account.objects.filter(gender="Trans-Gender")
-            return users
-    
     data = {
-        'users': get_patners()
+        'users': None
     }
-    return render(request, 'customer/home.html',data)
+    return render(request, 'attachments.html',data)
 
 def chat(request):
     return render(request, 'customer/chat.html')
 
-def engineer_home(request):
-    return render(request, 'engineer/home.html')
+def org_home(request):
+    return render(request, 'orghome.html')
 
 
 def register(request):
@@ -73,9 +74,13 @@ def register(request):
         email = request.POST.get('email')
         pin = request.POST.get('password')
         gender = request.POST.get('gender')
+        role = "Student"
+
+            
         print(username)
         print(email)
         print(gender)
+        print(role)
 
         #check if the email number is already registered
         if Account.objects.filter(phone_number=email).exists():
@@ -91,15 +96,24 @@ def register(request):
             user_name = username,
             password=make_password(pin),
             email = email,
+            role = role
         )
-
-        parent.is_customer = True
+        
         
         parent.save()
         messages.info(request, f"You are now registered as {username}")
 
         user = authenticate(request,username=email,password=pin)
         login(request,parent)
+
+        if request.user.is_organization == True:
+            redirect('users:org_home')
+
+        if request.user.is_student == True:
+            redirect('users:customer_home')
+
+        if user.is_authenticated:
+            return redirect('users:customer_home')
 
         print("Authenticated")
 

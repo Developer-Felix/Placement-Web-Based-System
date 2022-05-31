@@ -112,6 +112,8 @@ gender = (
     ('2', 'Female'),
 )
 
+STATUS = (("Organization", "Organization"), ("Student", "Student"))
+
 class Account(AbstractBaseUser, PermissionsMixin):
     user_name = models.CharField(max_length=100,null=True,blank=True)
     phone_number = models.CharField(max_length=20,null=True,blank=True)
@@ -122,12 +124,23 @@ class Account(AbstractBaseUser, PermissionsMixin):
     gender = models.CharField(max_length=255,null=True,blank=True)
     wants = models.CharField(max_length=255,null=True,blank=True)
     is_admin = models.BooleanField(default=False)
-    is_customer = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
+    is_organization = models.BooleanField(default=False)
+    role =  models.CharField(choices=STATUS,default="Student",max_length=25)
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
     avatar = models.ImageField(upload_to='avatars/', default='avatars/default.jpg')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if self.role == "Organization":
+            self.is_organization == True
+        
+        if self.role == "Student":
+            self.is_student == True
+
+        super(Account, self).save(*args, **kwargs)
 
     # is_anonymous = False
     # is_authenticated = True
