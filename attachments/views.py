@@ -6,7 +6,7 @@ from attachments.models import Attachment
 from tags.models import Tag
 
 # Create your views here.
-def attachments(request):
+def attachments_create(request):
     title = request.POST.get('title')
     description = request.POST.get('description')
     print(title)
@@ -27,10 +27,12 @@ def attachments(request):
         print("attachment not saved")
     return render(request,'create_attachment.html')
 
-def get_attachments(request):
+def list_attachments(request):
     #filter attacments with user_id
-    attachments = Attachment.objects.filter(user_id=request.user.id)
-    return render(request,'attachments.html',{'attachments':attachments})
+    attachments = Attachment.objects.filter(user_id=request.user.id).order_by('-id')
+    # paginate the attachments 
+    
+    return render(request,'list_attachments.html',{'attachments':attachments})
 
 #attacment detail to view all the applicant on a single attacment
 def attachment_detail(request,attachment_id):
