@@ -73,13 +73,11 @@ def register(request):
         username = request.POST.get('username')
         email = request.POST.get('email')
         pin = request.POST.get('password')
-        gender = request.POST.get('gender')
-        role = "Student"
+        role = request.POST.get('role')
 
             
         print(username)
         print(email)
-        print(gender)
         print(role)
 
         #check if the email number is already registered
@@ -91,7 +89,7 @@ def register(request):
     
 
         #     create a custom user with the phone number as the username and email backend as the password
-        parent = Account(
+        account = Account(
             phone_number = None,
             user_name = username,
             password=make_password(pin),
@@ -100,19 +98,19 @@ def register(request):
         )
         
         
-        parent.save()
+        account.save()
         messages.info(request, f"You are now registered as {username}")
 
         user = authenticate(request,username=email,password=pin)
-        login(request,parent)
-
-        if request.user.is_organization == True:
-            redirect('users:org_home')
-
-        if request.user.is_student == True:
-            redirect('users:customer_home')
+        login(request,account)
 
         if user.is_authenticated:
+            print("Authenticated")
+
+        if role == "Organization":
+            return redirect('users:org_home')
+
+        if role == "Student":
             return redirect('users:customer_home')
 
         print("Authenticated")
