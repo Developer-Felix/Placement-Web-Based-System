@@ -31,11 +31,11 @@ def list_attachments(request):
     #filter attacments with user_id
     attachments = Attachment.objects.filter(user_id=request.user.id).order_by('-id')
     # paginate the attachments 
-    
+
     return render(request,'list_attachments.html',{'attachments':attachments})
 
 #attacment detail to view all the applicant on a single attacment
-def attachment_detail(request,attachment_id):
+def attachment_application_detail(request,attachment_id):
     applicant = Application.objects.filter(attachment=attachment_id)
     return render(request,'attachment_detail.html',{'applications':applicant})
     

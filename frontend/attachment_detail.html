@@ -732,6 +732,7 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <table class="table table-bordered">
+                    {% if applications %}
                   <thead>                  
                     <tr>
                       <th style="width: 10px">#</th>
@@ -741,17 +742,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    {% for attachment in attachments %}
+                    
+                    {% for applications in applicationss %}
                    
                       <tr>
                         
-                        <td>{{attachment.id}}.</td>
+                        <td>{{applications.id}}.</td>
                       
-                      <a href="{% url 'users:attachment_application_detail' attachment.id %}">
-                        <td>{{attachment.title}}</td>
+                      <a href="">
+                        <td>{{applications.title}}</td>
                       </a>
-                        <td>{{attachment.description}}</td>
-                        {% if attachment.is_active %}
+                        <td>{{applications.description}}</td>
+                        {% if applications.is_active %}
                         <td><span class="badge bg-success">90%</span></td>
                         {% else %}
                         <td><span class="badge bg-primary">30%</span></td>
@@ -760,7 +762,13 @@
                     
                     
                     {% endfor %}
+                    {% else %}
+
+                    No Applications 
+
+                    
                   </tbody>
+                  {% endif %}
                 </table>
               </div>
               <!-- /.card-body -->
