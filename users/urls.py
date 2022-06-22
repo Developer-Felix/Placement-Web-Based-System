@@ -1,7 +1,7 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from applications.views import apply
+from applications.views import app_feed_back, apply, cv
 from attachments.views import  attachment_application_detail, attachments_create, list_attachments
 
 from users.views import customer_home, index, org_home, register
@@ -18,6 +18,9 @@ urlpatterns = [
     path('list/attachment/applications/<int:attachment_id>',attachment_application_detail,name="attachment_application_detail"),
     # path('customer/chat',chat, name='chat'),
     path('register/',register, name='register'),
+    path('cv/<applicant_id>',cv, name='cv'),
+     path('app_feed_back/',app_feed_back, name='app_feed_back'),
+    
     path('attachment/apply/<attachment_id>',apply,name="apply")
     # path('otp/',otp, name='otp'),
 ]

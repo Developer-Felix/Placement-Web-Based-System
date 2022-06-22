@@ -3,6 +3,7 @@ from distutils.ccompiler import gen_lib_options
 from django.shortcuts import redirect, render
 from psutil import users
 from pytz import utc
+from applications.models import Application
 from attachments.models import Attachment
 from config.sms import send_otp_to_validate_phone
 
@@ -56,10 +57,13 @@ def index(request):
     return render(request, 'index.html')
 
 def customer_home(request):
-    attacments = Attachment.objects.all()
+    attacments = Attachment.objects.all().order_by('-id')
+    applications = Application.objects.all()
+
+    
     data = {
         'users': None,
-        'attacments': attacments
+        'attacments': attacments,
     }
     return render(request, 'attachments.html',data)
 
