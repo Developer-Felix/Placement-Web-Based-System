@@ -152,6 +152,3 @@ class Account(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         db_table = "tbl_accounts"
-
-    def __str__(self):
-        return self.name

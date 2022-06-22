@@ -37,6 +37,8 @@ def list_attachments(request):
 #attacment detail to view all the applicant on a single attacment
 def attachment_application_detail(request,attachment_id):
     applicant = Application.objects.filter(attachment=attachment_id)
+    for app in applicant:
+        print(app.id)
     return render(request,'attachment_detail.html',{'applications':applicant})
     
 
